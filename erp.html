@@ -54,7 +54,9 @@ let TOK=localStorage.getItem('gh_tok')||'',ME={user:'',role:'viewer',local:false
 const FBCFG={apiKey:"AIzaSyDXME3dfVGCPtv0UrrJKRgtkcZQRVUlo4U",authDomain:"nhanam-f5d8c.firebaseapp.com",databaseURL:"https://nhanam-f5d8c-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"nhanam-f5d8c",storageBucket:"nhanam-f5d8c.firebasestorage.app",messagingSenderId:"1045500954138",appId:"1:1045500954138:web:9e7e597c3f1c0b463673a3"};
 let FDB=null;
 try{if(window.firebase){firebase.initializeApp(FBCFG);FDB=firebase.database()}}catch(e){console.warn('Firebase init lỗi:',e)}
-const fbAge=s=>s&&s.updated_ms?Math.max(0,(Date.now()-s.updated_ms)/1000):null;
+let SKEW=0;
+async function calSkew(){try{const r=await fetch(FBCFG.databaseURL+'/greenhouse/erp_skew.json',{method:'PUT',headers:{'Content-Type':'application/json'},body:'{"t":{".sv":"timestamp"}}'});const j=await r.json();if(j&&j.t)SKEW=Date.now()-j.t}catch(e){}}
+const fbAge=s=>s&&s.updated_ms?Math.max(0,(Date.now()-SKEW-s.updated_ms)/1000):null;
 async function fbCmd(payload){if(!FDB)throw new Error('Firebase chưa sẵn sàng');
   await FDB.ref('greenhouse_commands').push({...payload,done:false,created_ms:firebase.database.ServerValue.TIMESTAMP,source:'erp',user:ME.user})}
 const DV=[['fan','🌀'],['mist','💧'],['heater','🔥'],['alarm','🚨']],IC=Object.fromEntries(DV);
@@ -67,7 +69,7 @@ const ago=ts=>{const s=Date.now()/1000-ts;return s<90?'vừa xong':s<5400?Math.r
 function zone(v,lo,hi,al){if(v==null)return['Hết dữ liệu','bad'];if(al!=null&&v>=al)return['Quá nhiệt','bad'];if(v<lo)return['Thấp','wn'];if(v>hi)return['Cao','wn'];return['Trong vùng lý tưởng','ok']}
 function par(e){const m=e.msg;if(m.startsWith('ALERT|')){const [,t,l,x,v]=m.split('|');return{t,l,x,v}}if(/MẤT/.test(m))return{t:'MẤT KẾT NỐI',l:'warn',x:'Mất liên lạc với cảm biến: '+m.replace(/^MẤT kết nối cảm biến: /,'').slice(0,90),v:'—'};if(/khôi phục/.test(m))return{t:'KẾT NỐI',l:'info',x:m,v:'—'};return{t:e.kind=='user'?'ĐIỀU KHIỂN':e.kind=='relay'?'RELAY':e.kind=='auth'?'ĐĂNG NHẬP':'HỆ THỐNG',l:'info',x:m,v:''}}
 function cls(e){const p=par(e);return[p.t,p.l]}
-async function cmd(k,b){if(!can('operator'))return toast('Tài khoản chỉ có quyền xem');try{await fbCmd({type:'device',name:k,mode:b.mode,state:b.state===undefined?null:b.state});ack=`${new Date().toLocaleTimeString('vi-VN')} · ${k} ← ${JSON.stringify(b)} · đã gửi Firebase`;toast('Đã gửi lệnh qua Firebase — chờ HMI thực thi');setTimeout(refresh,1200)}catch(e){ack='LỖI: '+e.message;toast('Lỗi: '+e.message)}}
+async function cmd(k,b){if(!can('operator'))return toast('Tài khoản chỉ có quyền xem');try{await fbCmd({type:'device',name:k,mode:b.mode,state:b.state===undefined?null:b.state});ack=`${new Date().toLocaleTimeString('vi-VN')} · ${k} ← ${JSON.stringify(b)} · đã gửi Firebase`;toast('Đã gửi lệnh qua Firebase — backend sẽ thực thi');setTimeout(refresh,1200)}catch(e){ack='LỖI: '+e.message;toast('Lỗi: '+e.message)}}
 function ch(id,rows,k,col){const c=$(id);if(!c)return;const d=devicePixelRatio||1,w=c.clientWidth,h=c.clientHeight;c.width=w*d;c.height=h*d;const g=c.getContext('2d');g.scale(d,d);g.font='11px JetBrains Mono,monospace';
  if(rows.length<2){g.fillStyle='#8b97a5';g.fillText('Chưa đủ dữ liệu lịch sử (backend ghi 1 điểm mỗi 30 giây)',14,28);return}
  const L=40,R=12,T=10,B=22,pw=w-L-R,ph=h-T-B,t0=rows[0].ts,t1=rows[rows.length-1].ts;let a=Math.min(...rows.map(r=>r[k])),b=Math.max(...rows.map(r=>r[k]));if(b-a<4){a-=2;b+=2}a=Math.floor(a);b=Math.ceil(b);
@@ -136,7 +138,7 @@ dashboard:{t:'Tổng quan hệ thống',s:'Dữ liệu thời gian thực từ p
   TH&&TH.set(s.devices);$('#hud').innerHTML=DV.map(([k])=>`<span class="bdg ${s.devices[k].state?'ok':''}">${IC[k]} ${s.devices[k].label}: ${s.devices[k].state?'BẬT':'TẮT'}</span>`).join('');
   DV.forEach(([k])=>{const d=s.devices[k],w=$(`.sw[data-k=${k}]`);w&&w.classList.toggle('on',d.state);const n=$(`[data-n=${k}]`);n&&(n.textContent=d.label+' · CH'+d.channel)});$('#ack').textContent=ack;
   const md=DV.map(([k])=>s.devices[k].mode),mm=md.every(x=>x=='auto')?'TỰ ĐỘNG':md.every(x=>x=='manual')?'THỦ CÔNG':'HỖN HỢP';$('#m-a').classList.toggle('on',mm=='TỰ ĐỘNG');$('#m-m').classList.toggle('on',mm=='THỦ CÔNG');
-  const safe=!s.hmi_online?['HMI offline','bad']:!s.sensor_ok?['Mất cảm biến','bad']:(s.alarm||(T!=null&&T>=S.temp_alarm))?['Quá nhiệt','bad']:s.devices.heater.source=='safety'?['Khóa sưởi','wn']:['An toàn','ok'],rt=BUSST&&BUSST.rtt_avg!=null?Math.round(BUSST.rtt_avg)+' ms':'–';
+  const safe=!s.hmi_online?['Hệ thống offline','bad']:!s.sensor_ok?['Mất cảm biến','bad']:(s.alarm||(T!=null&&T>=S.temp_alarm))?['Quá nhiệt','bad']:s.devices.heater.source=='safety'?['Khóa sưởi','wn']:['An toàn','ok'],rt=BUSST&&BUSST.rtt_avg!=null?Math.round(BUSST.rtt_avg)+' ms':'–';
   const hl=(c,l,v)=>`<div class="${c}"><small><i></i>${l}</small><b>${v}</b></div>`;$('#hl').innerHTML=hl(s.sensor_ok?'ok':'bad','KẾT NỐI RS-485',s.sensor_ok?'Ổn định':'Mất kết nối')+hl(s.error_count?'wn':'ok','TIMEOUT',s.error_count+' lần')+hl(mm=='TỰ ĐỘNG'?'ok':'wn','CHẾ ĐỘ',mm)+hl(safe[1],'AN TOÀN NHÀ KÍNH',safe[0])+hl('ok','ĐỘ TRỄ RTT',rt)+hl('ok','BACKEND','Trực tuyến · '+Math.floor(s.uptime_s/60)+' phút');
   const a=EV.map(e=>[e,par(e)]).filter(x=>x[1].l!='info').slice(0,4);$('#ra').innerHTML=a.length?a.map(([e,p])=>`<div class="al ${p.l}"><div>${p.l=='crit'?'🔥':'⚠️'}</div><div><b>${p.t}</b><small>${p.x}${p.v&&p.v!='—'?' · '+p.v:''}</small></div><small style="margin-left:auto;white-space:nowrap">${ago(e.ts)}</small></div>`).join(''):'<small style="color:#34d399">✅ Không có cảnh báo — nhà kính đang an toàn.</small>'}},
 monitor:{t:'Giám sát',s:'Biểu đồ theo thời gian và bảng dữ liệu vận hành của 4 tải.',
@@ -172,13 +174,13 @@ report:{t:'Báo cáo',s:'Thống kê vận hành và xuất dữ liệu telemetr
  u(s){if(!$('#rs')||!s)return;const T=HI.map(r=>r.temp),mx=T.length?Math.max(...T):null,mn=T.length?Math.min(...T):null,H=HI.map(r=>r.hum);
   $('#rs').innerHTML=[['NHIỆT ĐỘ TRUNG BÌNH',f1(avg('temp'))+' °C',mn==null?'':f1(mn)+' → '+f1(mx)+' °C',''],['ĐỘ ẨM TRUNG BÌNH',f1(avg('hum'))+' %',H.length?f1(Math.min(...H))+' → '+f1(Math.max(...H))+' %':'',''],['THỜI GIAN HOẠT ĐỘNG',Math.floor(s.uptime_s/3600)+'h '+Math.floor(s.uptime_s%3600/60)+'m','Phiên backend hiện tại',''],['ĐIỂM DỮ LIỆU',HI.length,'Trong 24 giờ qua',''],['QUẠT CHẠY',pct('fan')+'%','Tỉ lệ thời gian ON','#818cf8'],['PHUN SƯƠNG CHẠY',pct('mist')+'%','Tỉ lệ thời gian ON','#22d3ee'],['NHIỆT ĐỘ CAO NHẤT',f1(mx)+' °C','Trong 24 giờ','#f59e0b'],['NHIỆT ĐỘ THẤP NHẤT',f1(mn)+' °C','Trong 24 giờ','#34d399']].map(([a,b,d,c])=>`<div class="card"><div class="lbl">${a}</div><div class="st" style="font-size:28px;color:${c}">${b}</div><small style="color:var(--mut)">${d}</small></div>`).join('')}},
 settings:{t:'Cài đặt',s:'Cấu hình ngưỡng điều khiển, khóa API và cảnh báo âm thanh.',
- b:()=>`<div class="g2"><div class="card"><h3 style="margin-bottom:12px">Kết nối</h3>${kv('Dữ liệu','Realtime DB · '+FBCFG.projectId)}${kv('Kênh','status · readings · events · commands')}${kv('Đồng bộ HMI','Realtime · qua Firebase')}<div id="cs"></div>${kv('Tài khoản',ME.user)}${kv('Vai trò',ME.role)}${kv('Truy cập','☁️ Firebase (rules mở)')}</div>
+ b:()=>`<div class="g2"><div class="card"><h3 style="margin-bottom:12px">Kết nối</h3>${kv('Dữ liệu','Realtime DB · '+FBCFG.projectId)}${kv('Kênh','status · readings · events · commands')}${kv('Đồng bộ','Realtime · qua Firebase')}<div id="cs"></div>${kv('Tài khoản',ME.user)}${kv('Vai trò',ME.role)}${kv('Truy cập','☁️ Firebase (rules mở)')}</div>
  <div class="card"><h3 style="margin-bottom:12px">Ngưỡng điều khiển (AUTO)</h3><form id="fm"></form><h4>Cảnh báo âm thanh</h4><div class="row"><button class="bt pr" id="s1">🔊 Bật</button><button class="bt" id="s2">▶ Test</button></div></div></div>`,
  i(){const F=[['temp_min','Sưởi BẬT khi T dưới','°C'],['temp_max','Quạt + phun BẬT khi T trên','°C'],['temp_alarm','Cảnh báo quá nhiệt','°C'],['temp_hyst','Vùng trễ nhiệt độ','°C'],['hum_min','Phun sương BẬT khi H dưới','%'],['hum_max','Quạt hút BẬT khi H trên','%'],['hum_hyst','Vùng trễ độ ẩm','%'],['mist_pulse_on_s','Phun: thời gian bật','s'],['mist_pulse_off_s','Phun: thời gian nghỉ','s'],['failsafe_timeout_s','Failsafe (mất cảm biến)','s']];
-  $('#fm').innerHTML=F.map(([k,l,u])=>`<div class="fr"><span>${l} (${u})</span><input type="number" step="0.5" name="${k}" value="${ST?ST.settings[k]:''}"></div>`).join('')+'<button class="bt pr" style="width:100%">💾 Lưu &amp; đồng bộ sang HMI</button>';
-  $('#fm').onsubmit=async e=>{e.preventDefault();const b={};new FormData(e.target).forEach((v,k)=>b[k]=parseFloat(v));try{await fbCmd({type:'settings',values:b});toast('Đã gửi ngưỡng qua Firebase — HMI sẽ áp dụng')}catch(x){toast('Lỗi: '+x.message)}};
+  $('#fm').innerHTML=F.map(([k,l,u])=>`<div class="fr"><span>${l} (${u})</span><input type="number" step="0.5" name="${k}" value="${ST?ST.settings[k]:''}"></div>`).join('')+'<button class="bt pr" style="width:100%">💾 Lưu &amp; đồng bộ xuống backend</button>';
+  $('#fm').onsubmit=async e=>{e.preventDefault();const b={};new FormData(e.target).forEach((v,k)=>b[k]=parseFloat(v));try{await fbCmd({type:'settings',values:b});toast('Đã gửi ngưỡng qua Firebase — backend sẽ áp dụng')}catch(x){toast('Lỗi: '+x.message)}};
   $('#lo')&&($('#lo').onclick=logout);if(!can('admin'))$$('#fm input,#fm button').forEach(x=>x.disabled=true);$('#s1').onclick=()=>{SND=!SND;snd();beep()};$('#s2').onclick=()=>{SND=true;beep();snd()};snd()},
- u(s){$('#cs')&&($('#cs').innerHTML=kv('Trạng thái',s.hmi_online?'<span style="color:#34d399">HMI online ✓</span>':'<span style="color:#f87171">HMI offline</span>')+kv('Cảm biến',s.sensor_ok?'Ổn định':'Mất kết nối')+kv('Chế độ',s.simulate?'Mô phỏng':'Phần cứng thật'))}}};
+ u(s){$('#cs')&&($('#cs').innerHTML=kv('Trạng thái',s.hmi_online?'<span style="color:#34d399">Hệ thống online ✓</span>':'<span style="color:#f87171">Hệ thống offline</span>')+kv('Cảm biến',s.sensor_ok?'Ổn định':'Mất kết nối')+kv('Chế độ',s.simulate?'Mô phỏng':'Phần cứng thật'))}}};
 function dl(n,t,c){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:t}));a.download=n;a.click()}
 const RK={viewer:1,operator:2,admin:3},can=r=>RK[ME.role]>=RK[r],csv=async()=>{if(HI.length<2)await hist(24);dl('greenhouse_history.csv','text/csv','time,temp_C,humidity_%,fan,mist,heater,alarm\n'+HI.map(r=>[tm(r.ts),r.temp,r.hum,r.fan,r.mist,r.heater,r.alarm].join(',')).join('\n'))};
 function showLogin(){$('#lg').hidden=false}function logout(){TOK='';localStorage.removeItem('gh_tok');location.reload()}
@@ -204,13 +206,13 @@ function go(){if(TH){TH.dead=true;TH.rd.dispose();TH=null}const h=(location.hash
 function setOn(on,msg){const hw=on&&ST&&ST.sensor_ok;$('#pl').className='pill '+(hw?'ok':on?'':'bad');$('#pt').textContent=!on?'Mất kết nối':hw?'Online':'Mất cảm biến';$('#bell').classList.toggle('on',!on||!hw||(ST&&ST.alarm));const e=$('#err');e.textContent=msg||'';e.classList.toggle('show',!!msg)}
 async function refresh(){if(!FDB){setOn(false,'⚠ Không nạp được Firebase SDK — kiểm tra Internet');return}
  try{const snap=await FDB.ref('greenhouse/status').once('value');
-  if(!snap.exists()){setOn(false,'⚠ Chưa có dữ liệu trên Firebase — mở HMI tại nhà kính để đẩy dữ liệu');return}
+  if(!snap.exists()){setOn(false,'⚠ Chưa có dữ liệu trên Firebase — hãy khởi động backend tại nhà kính');return}
   const s=snap.val(),age=fbAge(s),live=age!=null&&age<15;s.sensor_ok=!!s.sensor_ok&&live;s.hmi_online=live;ST=s;BUSST=s.bus||null;
-  setOn(live,live?(s.sensor_ok?'':'⚠ Mất kết nối phần cứng — kiểm tra cáp RS-485 / cảm biến SHT20'):'⚠ HMI không đẩy dữ liệu lên Firebase ('+Math.round(age)+'s)');
+  setOn(live,live?(s.sensor_ok?'':'⚠ Mất kết nối phần cứng — kiểm tra cáp RS-485 / cảm biến SHT20'):'⚠ Hệ thống không đẩy dữ liệu lên Firebase ('+Math.round(age)+'s)');
   cur&&cur.u(s);
   if(SND&&(s.alarm||!s.sensor_ok)&&Date.now()-lastBeep>5000){lastBeep=Date.now();beep()}}catch(e){setOn(false,'⚠ Lỗi đọc Firebase: '+(e.message||e))}}
 async function evs(){if(!FDB)return;try{const snap=await FDB.ref('greenhouse_events').orderByChild('ts').limitToLast(200).once('value');EV=Object.values(snap.val()||{}).sort((a,b)=>b.ts-a.ts);cur&&(cur===P.alerts||cur===P.dashboard)&&ST&&cur.u(ST)}catch(e){}}
 $('#q').oninput=e=>{Q=e.target.value;if(location.hash!='#alerts'&&location.hash!='#devices'){location.hash='#alerts'}else cur.u(ST)};
 addEventListener('hashchange',go);addEventListener('resize',()=>cur===P.monitor&&cur.i());
-init();setInterval(refresh,2000);setInterval(evs,10000);setInterval(busPoll,1000);
+init();calSkew();setInterval(calSkew,60000);setInterval(refresh,2000);setInterval(evs,10000);setInterval(busPoll,1000);
 </script></body></html>
