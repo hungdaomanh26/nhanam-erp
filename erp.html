@@ -204,15 +204,17 @@ async function busPoll(){const st=ST&&ST.bus;if(cur!==P.dashboard||PAUSE||!$('#c
 function go(){if(TH){TH.dead=true;TH.rd.dispose();TH=null}const h=(location.hash||'#dashboard').slice(1);cur=P[h]||P.dashboard;$$('nav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')=='#'+(P[h]?h:'dashboard')));
  $('#view').innerHTML=`<div class="hr"><div><h1>${cur.t}</h1><p class="sub">${cur.s}</p></div></div>`+cur.b();cur.i&&cur.i();ST&&cur.u(ST)}
 function setOn(on,msg){const hw=on&&ST&&ST.sensor_ok;$('#pl').className='pill '+(hw?'ok':on?'':'bad');$('#pt').textContent=!on?'Mất kết nối':hw?'Online':'Mất cảm biến';$('#bell').classList.toggle('on',!on||!hw||(ST&&ST.alarm));const e=$('#err');e.textContent=msg||'';e.classList.toggle('show',!!msg)}
-async function refresh(){if(!FDB){setOn(false,'⚠ Không nạp được Firebase SDK — kiểm tra Internet');return}
- try{const snap=await FDB.ref('greenhouse/status').once('value');
+function stUpdate(snap){try{
   if(!snap.exists()){setOn(false,'⚠ Chưa có dữ liệu trên Firebase — hãy khởi động backend tại nhà kính');return}
   const s=snap.val(),age=fbAge(s),live=age!=null&&age<15;s.sensor_ok=!!s.sensor_ok&&live;s.hmi_online=live;ST=s;BUSST=s.bus||null;
   setOn(live,live?(s.sensor_ok?'':'⚠ Mất kết nối phần cứng — kiểm tra cáp RS-485 / cảm biến SHT20'):'⚠ Hệ thống không đẩy dữ liệu lên Firebase ('+Math.round(age)+'s)');
   cur&&cur.u(s);
   if(SND&&(s.alarm||!s.sensor_ok)&&Date.now()-lastBeep>5000){lastBeep=Date.now();beep()}}catch(e){setOn(false,'⚠ Lỗi đọc Firebase: '+(e.message||e))}}
+let ST_LIS=false;
+async function refresh(){if(!FDB){setOn(false,'⚠ Không nạp được Firebase SDK — kiểm tra Internet');return}
+  if(!ST_LIS){ST_LIS=true;FDB.ref('greenhouse/status').on('value',stUpdate)}}
 async function evs(){if(!FDB)return;try{const snap=await FDB.ref('greenhouse_events').orderByChild('ts').limitToLast(200).once('value');EV=Object.values(snap.val()||{}).sort((a,b)=>b.ts-a.ts);cur&&(cur===P.alerts||cur===P.dashboard)&&ST&&cur.u(ST)}catch(e){}}
 $('#q').oninput=e=>{Q=e.target.value;if(location.hash!='#alerts'&&location.hash!='#devices'){location.hash='#alerts'}else cur.u(ST)};
 addEventListener('hashchange',go);addEventListener('resize',()=>cur===P.monitor&&cur.i());
-init();calSkew();setInterval(calSkew,60000);setInterval(refresh,2000);setInterval(evs,10000);setInterval(busPoll,1000);
+init();calSkew();refresh();setInterval(calSkew,60000);setInterval(evs,10000);setInterval(busPoll,1000);
 </script></body></html>
