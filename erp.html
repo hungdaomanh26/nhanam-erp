@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MushroomVision · SCADA</title>
+<script>try{const v=localStorage.getItem('nh_view')||'auto';if(v==='desk'){document.querySelector('meta[name=viewport]').setAttribute('content','width=1280');document.documentElement.dataset.view='desk'}else if(v==='mobile'){document.documentElement.dataset.view='mobile'}}catch(e){}</script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
 <style>
 :root{--bg:#0a0c0f;--c:#101317;--bd:#1f262e;--ink:#eef2f6;--mut:#8b97a5;--ac:#10b981;--t:#f59e0b;--h:#22d3ee;--bad:#ef4444}
@@ -17,10 +18,10 @@ nav h6{margin:16px 10px 6px;font-size:11px;letter-spacing:.16em;color:var(--mut)
 h1{font-size:34px;margin:0 0 4px;letter-spacing:-.02em}.sub{color:var(--mut);margin:0 0 22px}.hr{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
 .card{background:var(--c);border:1px solid var(--bd);border-radius:24px;padding:22px;margin-bottom:18px;transition:border-color .25s,transform .25s,box-shadow .25s}.card:hover{border-color:#10b98155;box-shadow:0 12px 36px #0007}
 .card h3{margin:0 0 4px;font-size:18px}.card h4{margin:18px 0 8px;font-size:15px}.lbl{font-size:11px;letter-spacing:.14em;color:var(--mut);font-weight:700;text-transform:uppercase}
-.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.g4 .card{margin:0}.g21{display:grid;grid-template-columns:2fr 1fr;gap:18px;margin:18px 0 0}.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-@media(max-width:1100px){.g4{grid-template-columns:1fr 1fr}.g21,.g3{grid-template-columns:1fr}}@media(max-width:860px){.app{grid-template-columns:70px 1fr}.br div,nav h6,nav a span,.snd{display:none}nav a{justify-content:center}.g2{grid-template-columns:1fr}.top{padding:12px}#view{padding:16px}h1{font-size:26px}}@media(max-width:520px){.g4{grid-template-columns:1fr}}
-.kp .tp{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.ic{width:50px;height:50px;border-radius:15px;display:grid;place-items:center;font-size:23px;background:#ffffff0a}
-.bdg{font-size:12px;font-weight:700;padding:5px 12px;border-radius:99px;background:#ffffff0d;color:var(--mut)}.bdg.ok{color:#34d399;background:#10b98118}.bdg.wn{color:#fbbf24;background:#f59e0b18}.bdg.bad{color:#f87171;background:#ef444418}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.g4 .card{margin:0}.g6{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}.g6 .card{margin:0;padding:16px}.g21{display:grid;grid-template-columns:2fr 1fr;gap:18px;margin:18px 0 0}.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:1100px){.g4{grid-template-columns:1fr 1fr}.g6{grid-template-columns:repeat(3,minmax(0,1fr))}.g21,.g3{grid-template-columns:1fr}}@media(max-width:860px){.app{grid-template-columns:70px 1fr}.br div,nav h6,nav a span,.snd{display:none}nav a{justify-content:center}.g2{grid-template-columns:1fr}.g6{grid-template-columns:1fr 1fr}.top{padding:12px}#view{padding:16px}h1{font-size:26px}}@media(max-width:520px){.g4{grid-template-columns:1fr}.g6{grid-template-columns:1fr 1fr}}
+.kp .tp{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:14px}.g6 .ic{flex:none;width:34px;height:34px;border-radius:11px;font-size:17px}.g6 .val{font-size:26px;line-height:1.4;margin-top:2px}.g6 .bdg{font-size:10.5px;padding:4px 8px;max-width:calc(100% - 42px);overflow:hidden;text-overflow:ellipsis}.ic{width:50px;height:50px;border-radius:15px;display:grid;place-items:center;font-size:23px;background:#ffffff0a}
+.bdg{font-size:12px;font-weight:700;padding:5px 12px;border-radius:99px;background:#ffffff0d;color:var(--mut);white-space:nowrap}.bdg.ok{color:#34d399;background:#10b98118}.bdg.wn{color:#fbbf24;background:#f59e0b18}.bdg.bad{color:#f87171;background:#ef444418}
 .val{font:700 34px/1.1 'JetBrains Mono',monospace}.val small{font-size:15px;color:var(--mut);margin-left:5px}.bar{height:7px;border-radius:9px;background:#ffffff0d;margin-top:14px;overflow:hidden}.bar i{display:block;height:100%;width:0;border-radius:9px;background:var(--ac);transition:width .8s,background .4s}
 .tb{display:flex;gap:6px;margin-bottom:14px;border-bottom:1px solid var(--bd)}.tb button{background:none;border:0;color:var(--mut);font:600 14px Inter;padding:10px 14px;cursor:pointer;border-bottom:2px solid transparent;transition:.2s}.tb button:hover{color:var(--ink)}.tb .on{color:#34d399;border-color:var(--ac)}
 .hl{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.hl div{border:1px solid var(--bd);border-radius:14px;padding:10px 14px;background:#ffffff05}.hl small{display:block;font-size:10px;letter-spacing:.14em;color:var(--mut);display:flex;gap:7px;align-items:center}.hl small i{width:8px;height:8px;border-radius:50%;background:var(--mut)}.hl .ok i{background:var(--ac)}.hl .bad i{background:var(--bad)}.hl .wn i{background:var(--t)}
@@ -38,18 +39,55 @@ input,select{padding:10px 14px;border:1px solid var(--bd);border-radius:12px;bac
 .con{height:300px;overflow:auto;background:#06090c;border:1px solid var(--bd);border-radius:14px;padding:10px;font:12px/1.65 'JetBrains Mono',monospace}.bl{margin-bottom:4px}.bl i{color:#5b6b78;font-style:normal}.bl.TX{color:#fbbf24}.bl.RX{color:#22d3ee}.bl.ERR{color:#f87171}.bl b{padding:1px 4px;border-radius:5px;font-weight:500;cursor:help}.bl .a{background:#a78bfa33}.bl .f{background:#fbbf2426}.bl .d{background:#22d3ee22}.bl .c{background:#ffffff14}.bl em{display:block;padding-left:20px;color:var(--mut);font-style:normal;font-size:11px}
 .tws{width:100%;display:block}.tws .bx{fill:#ffffff08;stroke:#ffffff26;stroke-width:1.5}.bl2{transform-box:fill-box;transform-origin:center}.on .bl2{animation:sp .6s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}.mp{fill:#7dd3fc;opacity:0}.on .mp{animation:rs 1.6s infinite}.on .mp:nth-of-type(2){animation-delay:.5s}.on .mp:nth-of-type(3){animation-delay:1s}@keyframes rs{0%{transform:translateY(6px);opacity:0}30%{opacity:.9}100%{transform:translateY(-20px);opacity:0}}.hg{fill:#fbbf24;opacity:0;transition:.4s}.on .hg{opacity:.55}.bu{fill:#3a3f2e}.on .bu{fill:#fbbf24}.alr{fill:#7f1d1d}.on .alr{fill:#ef4444;animation:bk .7s steps(2) infinite}@keyframes bk{50%{opacity:.25}}.tws text{fill:#cbd5e1;font:600 11px Inter}
 #err{position:fixed;left:50%;bottom:22px;transform:translate(-50%,30px);opacity:0;pointer-events:none;transition:.4s;z-index:9;padding:10px 20px;border-radius:99px;background:#b91c1c;border:1px solid #fca5a5;font-weight:600;font-size:13px}#err.show{opacity:1;transform:translate(-50%,0)}#toast{position:fixed;top:78px;right:20px;background:#047857;padding:10px 18px;border-radius:14px;opacity:0;transition:.3s;z-index:9}#toast.show{opacity:1}
-#lg{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:#0a0c0fee;backdrop-filter:blur(8px)}#lg[hidden]{display:none}#lf{width:340px;display:flex;flex-direction:column;gap:12px;background:var(--c);border:1px solid var(--bd);border-radius:24px;padding:28px}</style></head><body><div class="app">
+#lg{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:#0a0c0fee;backdrop-filter:blur(8px)}#lg[hidden]{display:none}#lf{width:340px;display:flex;flex-direction:column;gap:12px;background:var(--c);border:1px solid var(--bd);border-radius:24px;padding:28px}
+#pm{position:fixed;inset:0;z-index:30;display:none;place-items:center;background:#05070ad9;backdrop-filter:blur(10px)}#pm.show{display:grid}
+.pmc{width:370px;background:var(--c);border:1px solid var(--bd);border-radius:24px;padding:26px;box-shadow:0 30px 80px #000a}
+.pmc h3{margin:0 0 6px;font-size:18px}.pmc p{margin:0 0 16px;color:var(--mut);font-size:13px;line-height:1.5}
+.pmc input{width:100%;padding:13px 16px;border-radius:14px;border:1px solid var(--bd);background:#0b0e12;color:var(--ink);font:800 22px 'JetBrains Mono',monospace;letter-spacing:.4em;text-align:center}
+.pmc input:focus{outline:0;border-color:var(--ac);box-shadow:0 0 0 3px #10b98133}
+.pmc .lock{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-size:22px;background:#10b9811f;margin-bottom:14px}
+#pm-e{min-height:18px;color:#f87171;font-size:12px;font-weight:600;margin-top:8px}
+.pmc .row{margin-top:12px;justify-content:flex-end}
+#pm.shake .pmc{animation:sk .38s}@keyframes sk{20%{transform:translateX(-9px)}45%{transform:translateX(9px)}70%{transform:translateX(-5px)}}
+html[data-view="desk"] body{min-width:1280px}
+html[data-view="desk"] .app{grid-template-columns:260px 1fr}
+html[data-view="desk"] .br div,html[data-view="desk"] nav h6,html[data-view="desk"] .snd{display:block}
+html[data-view="desk"] nav a span{display:inline}
+html[data-view="desk"] nav a{justify-content:flex-start}
+html[data-view="desk"] .g2{grid-template-columns:1fr 1fr}
+html[data-view="desk"] .g21{grid-template-columns:2fr 1fr}
+html[data-view="desk"] .g3{grid-template-columns:repeat(3,1fr)}
+html[data-view="desk"] .g4{grid-template-columns:repeat(4,1fr)}
+html[data-view="desk"] .g6{grid-template-columns:repeat(6,minmax(0,1fr))}
+html[data-view="desk"] .top{padding:14px 28px}
+html[data-view="desk"] #view{padding:28px}
+html[data-view="desk"] h1{font-size:34px}
+html[data-view="mobile"] body{background:#05070a}
+html[data-view="mobile"] .app{grid-template-columns:70px 1fr;max-width:430px;margin:0 auto;border-left:1px solid var(--bd);border-right:1px solid var(--bd);box-shadow:0 0 60px #000a}
+html[data-view="mobile"] .br div,html[data-view="mobile"] nav h6,html[data-view="mobile"] nav a span,html[data-view="mobile"] .snd{display:none}
+html[data-view="mobile"] nav a{justify-content:center}
+html[data-view="mobile"] .g2,html[data-view="mobile"] .g21,html[data-view="mobile"] .g3{grid-template-columns:1fr}
+html[data-view="mobile"] .g4{grid-template-columns:1fr}
+html[data-view="mobile"] .g6{grid-template-columns:1fr 1fr}
+html[data-view="mobile"] .g6 .ic{width:32px;height:32px;font-size:16px}
+html[data-view="mobile"] .g6 .val{font-size:22px}
+html[data-view="mobile"] .top{padding:12px;flex-wrap:wrap;gap:10px}
+html[data-view="mobile"] .top input{flex:1 1 100%;max-width:none}
+html[data-view="mobile"] .pill{padding:6px 12px;font-size:12px}
+html[data-view="mobile"] #view{padding:16px}
+html[data-view="mobile"] h1{font-size:26px}</style></head><body><div class="app">
 <aside><div class="br"><i>🍄</i><div><b>MushroomVision</b><small>SCADA · IoT</small></div></div>
 <nav><h6>TỔNG QUAN</h6><a href="#dashboard">📊<span>Dashboard</span></a><a href="#monitor">📈<span>Giám sát</span></a><h6>VẬN HÀNH</h6><a href="#alerts">🔔<span>Cảnh báo</span></a><a href="#devices">🔌<span>Thiết bị</span></a><h6>QUẢN TRỊ</h6><a href="#report">📄<span>Báo cáo</span></a><a href="#settings">⚙️<span>Cài đặt</span></a></nav>
 <button class="snd" id="snd">🔊<b>Bật âm thanh</b><small>Nghe bíp khi có cảnh báo khẩn cấp</small></button></aside>
 <main><div class="top"><input id="q" placeholder="🔍 Tìm cảnh báo, thiết bị…"><span style="flex:1"></span><span class="pill" id="ac">…</span><span class="pill" id="pl"><i></i><b id="pt">Đang kết nối…</b></span><span class="bell" id="bell">🔔</span><span class="mono" id="un" style="color:var(--mut);font-size:12px"></span><span class="av">A</span><button class="bt" id="out" onclick="logout()" hidden style="padding:6px 12px">Thoát</button></div><div id="view"></div></main></div>
 <div id="lg" hidden><form id="lf"><div class="br" style="padding:0 0 10px"><i>🍄</i><div><b>MushroomVision</b><small>ERP · TRUY CẬP TỪ XA</small></div></div><input id="lu" placeholder="Tài khoản" autocomplete="username"><input id="lp" type="password" placeholder="Mật khẩu" autocomplete="current-password"><button class="bt pr">Đăng nhập</button><small id="le" style="color:#f87171"></small></form></div><div id="err"></div><div id="toast"></div>
+<div id="pm"><div class="pmc"><div class="lock">🔒</div><h3>Xác nhận chuyển chế độ</h3><p>Chuyển thiết bị từ <b>TỰ ĐỘNG</b> sang <b>THỦ CÔNG</b> cần mã xác nhận của quản trị viên.</p><input id="pm-i" type="password" inputmode="numeric" autocomplete="off" maxlength="8" placeholder="••••"><div id="pm-e"></div><div class="row"><button class="bt" id="pm-no">Hủy</button><button class="bt pr" id="pm-ok">Xác nhận</button></div></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
 <script>
 const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
-let TOK=localStorage.getItem('gh_tok')||'',ME={user:'',role:'viewer',local:false},ST=null,EV=[],HI=[],Q='',cur=null,SND=false,lastBeep=0,ack='Chưa có lệnh.';
+let TOK=localStorage.getItem('gh_tok')||'',ME={user:'',role:'viewer',local:false},ST=null,EV=[],HI=[],Q='',cur=null,SND=false,lastBeep=0,ack='Chưa có lệnh.',UNL=false;
 // ---------- FIREBASE: ERP đọc dữ liệu từ cloud ----------
 const FBCFG={apiKey:"AIzaSyDXME3dfVGCPtv0UrrJKRgtkcZQRVUlo4U",authDomain:"nhanam-f5d8c.firebaseapp.com",databaseURL:"https://nhanam-f5d8c-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"nhanam-f5d8c",storageBucket:"nhanam-f5d8c.firebasestorage.app",messagingSenderId:"1045500954138",appId:"1:1045500954138:web:9e7e597c3f1c0b463673a3"};
 let FDB=null;
@@ -66,10 +104,29 @@ async function api(p,o={}){const c=new AbortController(),t=setTimeout(()=>c.abor
   if(!r.ok){let m=r.status;try{m=(await r.json()).detail}catch(e){}throw new Error(m)}return await r.json()}finally{clearTimeout(t)}}
 const tm=ts=>new Date(ts*1000).toLocaleString('vi-VN',{hour12:false}),f1=v=>v==null?'--.-':v.toFixed(1);
 const ago=ts=>{const s=Date.now()/1000-ts;return s<90?'vừa xong':s<5400?Math.round(s/60)+' phút trước':s<172800?Math.round(s/3600)+' giờ trước':Math.round(s/86400)+' ngày trước'};
-function zone(v,lo,hi,al){if(v==null)return['Hết dữ liệu','bad'];if(al!=null&&v>=al)return['Quá nhiệt','bad'];if(v<lo)return['Thấp','wn'];if(v>hi)return['Cao','wn'];return['Trong vùng lý tưởng','ok']}
+function zone(v,lo,hi,al){if(v==null)return['Hết dữ liệu','bad'];if(al!=null&&v>=al)return['Quá nhiệt','bad'];if(v<lo)return['Thấp','wn'];if(v>hi)return['Cao','wn'];return['Lý tưởng','ok']}
 function par(e){const m=e.msg;if(m.startsWith('ALERT|')){const [,t,l,x,v]=m.split('|');return{t,l,x,v}}if(/MẤT/.test(m))return{t:'MẤT KẾT NỐI',l:'warn',x:'Mất liên lạc với cảm biến: '+m.replace(/^MẤT kết nối cảm biến: /,'').slice(0,90),v:'—'};if(/khôi phục/.test(m))return{t:'KẾT NỐI',l:'info',x:m,v:'—'};return{t:e.kind=='user'?'ĐIỀU KHIỂN':e.kind=='relay'?'RELAY':e.kind=='auth'?'ĐĂNG NHẬP':'HỆ THỐNG',l:'info',x:m,v:''}}
 function cls(e){const p=par(e);return[p.t,p.l]}
-async function cmd(k,b){if(!can('operator'))return toast('Tài khoản chỉ có quyền xem');try{await fbCmd({type:'device',name:k,mode:b.mode,state:b.state===undefined?null:b.state});ack=`${new Date().toLocaleTimeString('vi-VN')} · ${k} ← ${JSON.stringify(b)} · đã gửi Firebase`;toast('Đã gửi lệnh qua Firebase — backend sẽ thực thi');setTimeout(refresh,1200)}catch(e){ack='LỖI: '+e.message;toast('Lỗi: '+e.message)}}
+const PASSCODE='1234';
+function askPass(){
+ return new Promise(res=>{
+  const m=$('#pm'),i=$('#pm-i'),e=$('#pm-e'),okb=$('#pm-ok'),nob=$('#pm-no');let done=false;
+  const fin=v=>{if(done)return;done=true;m.classList.remove('show');document.removeEventListener('keydown',key);okb.onclick=nob.onclick=null;res(v)};
+  const ok=()=>{if(i.value.trim()===PASSCODE){toast('✅ Đã xác nhận mã');fin(true)}else{e.textContent='Mã không đúng — vui lòng thử lại';m.classList.add('shake');i.select();setTimeout(()=>m.classList.remove('shake'),420)}};
+  const key=ev=>{if(ev.key==='Enter'){ev.preventDefault();ok()}else if(ev.key==='Escape')fin(false)};
+  i.value='';e.textContent='';m.classList.add('show');setTimeout(()=>i.focus(),60);
+  okb.onclick=ok;nob.onclick=()=>fin(false);document.addEventListener('keydown',key);
+ });
+}
+async function cmd(k,b,skipPass){if(!can('operator'))return toast('Tài khoản chỉ có quyền xem');
+ const cur0=ST&&ST.devices&&ST.devices[k];
+ if(b.mode==='manual'&&!skipPass&&!(cur0&&cur0.mode==='manual')&&!UNL){
+  if(!await askPass())return toast('Đã hủy — giữ nguyên chế độ tự động');
+  UNL=true;                        // mở khoá 1 lần cho tới khi cả hệ thống về TỰ ĐỘNG
+ }
+ if(ST&&ST.devices&&ST.devices[k]){ST.devices[k].mode=b.mode;if(b.mode==='manual')ST.devices[k].state=b.state;cur&&cur.u(ST)}   // gạt nút tức thì, dữ liệu thật đồng bộ lại sau
+ if(ST&&ST.devices&&DV.every(([x])=>ST.devices[x].mode==='auto'))UNL=false;   // về hết TỰ ĐỘNG -> lần sau vào THỦ CÔNG phải nhập mã lại
+ try{await fbCmd({type:'device',name:k,mode:b.mode,state:b.state===undefined?null:b.state});ack=`${new Date().toLocaleTimeString('vi-VN')} · ${k} ← ${JSON.stringify(b)} · đã gửi Firebase`;toast('Đã gửi lệnh qua Firebase — backend sẽ thực thi')}catch(e){ack='LỖI: '+e.message;toast('Lỗi: '+e.message)}}
 function ch(id,rows,k,col){const c=$(id);if(!c)return;const d=devicePixelRatio||1,w=c.clientWidth,h=c.clientHeight;c.width=w*d;c.height=h*d;const g=c.getContext('2d');g.scale(d,d);g.font='11px JetBrains Mono,monospace';
  if(rows.length<2){g.fillStyle='#8b97a5';g.fillText('Chưa đủ dữ liệu lịch sử (backend ghi 1 điểm mỗi 30 giây)',14,28);return}
  const L=40,R=12,T=10,B=22,pw=w-L-R,ph=h-T-B,t0=rows[0].ts,t1=rows[rows.length-1].ts;let a=Math.min(...rows.map(r=>r[k])),b=Math.max(...rows.map(r=>r[k]));if(b-a<4){a-=2;b+=2}a=Math.floor(a);b=Math.ceil(b);
@@ -93,48 +150,103 @@ let TH=null,BUSST=null;
 function build3d(){const box=$('#v3');if(!box)return;
  if(!window.THREE){box.innerHTML='<div style="padding:110px 20px;text-align:center;color:var(--mut)">Không tải được thư viện 3D (cần Internet lần đầu). Các phần khác vẫn hoạt động bình thường.</div>';return}
  const W=box.clientWidth||600,Ht=400,sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(42,W/Ht,.1,100),rd=new THREE.WebGLRenderer({antialias:true,alpha:true});
- rd.setSize(W,Ht);rd.setPixelRatio(Math.min(devicePixelRatio||1,2));box.appendChild(rd.domElement);
- sc.add(new THREE.AmbientLight(0xffffff,.6));const dl=new THREE.DirectionalLight(0xffffff,.7);dl.position.set(5,9,6);sc.add(dl);
+ rd.setSize(W,Ht);rd.setPixelRatio(Math.min(devicePixelRatio||1,2));rd.shadowMap.enabled=true;rd.shadowMap.type=THREE.PCFSoftShadowMap;box.appendChild(rd.domElement);
+ sc.fog=new THREE.Fog(0x070b0d,20,44);
+ sc.add(new THREE.HemisphereLight(0xcfeaff,0x241a12,.9));
+ sc.add(new THREE.AmbientLight(0xffffff,.22));
+ const dl=new THREE.DirectionalLight(0xfff1d8,1.3);dl.position.set(6.5,11,7);dl.castShadow=true;dl.shadow.mapSize.width=dl.shadow.mapSize.height=1024;dl.shadow.bias=-.0006;const dc=dl.shadow.camera;dc.left=-8;dc.right=8;dc.top=9;dc.bottom=-6;sc.add(dl);
+ const rim=new THREE.DirectionalLight(0x7ff0cf,.3);rim.position.set(-8,4,-6);sc.add(rim);
  const M=(c,o)=>new THREE.MeshStandardMaterial(Object.assign({color:c},o||{})),add=(g,m,x,y,z,p)=>{const o=new THREE.Mesh(g,m);o.position.set(x,y,z);(p||sc).add(o);return o};
- add(new THREE.BoxGeometry(10,.2,7),M(0x15231f),0,-.1,0);
- const gl=M(0x9be7ff,{transparent:true,opacity:.13,roughness:.1,side:THREE.DoubleSide});
- add(new THREE.BoxGeometry(8,3,5),gl,0,1.5,0);const ed=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(8,3,5)),new THREE.LineBasicMaterial({color:0xa9c4be}));ed.position.y=1.5;sc.add(ed);
- const an=Math.atan(1.2/2.5),rl=Math.hypot(2.5,1.2);[[-1,-an],[1,an]].forEach(([z,a])=>{add(new THREE.BoxGeometry(8,.05,rl),gl,0,3.6,z*1.25).rotation.x=a});
- const sh=new THREE.Shape();sh.moveTo(-2.5,0);sh.lineTo(2.5,0);sh.lineTo(0,1.2);[-4,4].forEach(x=>{add(new THREE.ShapeGeometry(sh),gl,x,3,0).rotation.y=Math.PI/2});
- [-1.3,1.3].forEach(z=>{add(new THREE.BoxGeometry(6.4,.45,1.1),M(0x5b4630),0,.25,z);for(let i=0;i<11;i++){const x=-3+i*.6+(z>0?.2:0),zz=z+(i%2?.18:-.18);add(new THREE.CylinderGeometry(.04,.05,.2,8),M(0xf1e9d8),x,.58,zz);add(new THREE.SphereGeometry(.15,12,8,0,Math.PI*2,0,Math.PI/2),M(i%3?0xe2c9a0:0xcfa97a),x,.68,zz)}});
- const fg=new THREE.Group();fg.position.set(-2.6,2.1,-2.45);sc.add(fg);add(new THREE.TorusGeometry(.5,.05,8,24),M(0x94a3b8),0,0,0,fg);const bl=new THREE.Group();fg.add(bl);
- for(let i=0;i<4;i++){const b=add(new THREE.BoxGeometry(.42,.16,.02),M(0x5eead4),Math.cos(i*Math.PI/2)*.25,Math.sin(i*Math.PI/2)*.25,0,bl);b.rotation.z=i*Math.PI/2}
- add(new THREE.CylinderGeometry(.04,.04,6,8),M(0x38bdf8),0,2.9,0).rotation.z=Math.PI/2;
- const N=90,pg=new THREE.BufferGeometry(),pa=new Float32Array(N*3),pv=new Float32Array(N);for(let i=0;i<N;i++){pa[i*3]=(Math.random()-.5)*5.6;pa[i*3+1]=.8+Math.random()*2;pa[i*3+2]=(Math.random()-.5)*1.2;pv[i]=.5+Math.random()}
- pg.setAttribute('position',new THREE.BufferAttribute(pa,3));const pts=new THREE.Points(pg,new THREE.PointsMaterial({color:0x7dd3fc,size:.08,transparent:true,opacity:.85}));pts.visible=false;sc.add(pts);
- const bm=M(0x3a3f2e,{emissive:0xffb84d,emissiveIntensity:0}),hl=new THREE.PointLight(0xffc266,0,9);hl.position.set(2.6,2.4,-2);sc.add(hl);add(new THREE.SphereGeometry(.17,16,12),bm,2.6,2.5,-2.2);
- const am=M(0x7f1d1d,{emissive:0xff2222,emissiveIntensity:.05}),al=new THREE.PointLight(0xff3333,0,6);al.position.set(3.6,2.7,1.9);sc.add(al);add(new THREE.CylinderGeometry(.13,.16,.3,16),am,3.7,2.6,2);
- add(new THREE.BoxGeometry(.5,.3,.12),M(0x0f766e),0,1.7,-2.45);
- const lab=(t,x,y,z)=>{const c=document.createElement('canvas');c.width=256;c.height=64;const g=c.getContext('2d');g.fillStyle='#0b1013cc';g.fillRect(0,0,256,64);g.fillStyle='#e6f4f1';g.font='600 26px Inter,sans-serif';g.textAlign='center';g.fillText(t,128,41);const s=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c)}));s.scale.set(1.3,.33,1);s.position.set(x,y,z);sc.add(s)};
- lab('Quạt',-2.6,3,-2.4);lab('Phun sương',0,3.3,0);lab('Sưởi halogen',2.6,3.1,-2.2);lab('Đèn báo',3.7,3.1,2);lab('SHT20',0,2.1,-2.4);
+ const fl=add(new THREE.BoxGeometry(12,.3,9),M(0x121b18,{roughness:.95}),0,-.15,0);fl.receiveShadow=true;
+ add(new THREE.BoxGeometry(8.5,.06,5.5),M(0x1b2a24,{roughness:.9}),0,.03,0).receiveShadow=true;
+ const grid=new THREE.GridHelper(12,12,0x2c4f44,0x203a32);grid.position.y=.012;grid.material.transparent=true;grid.material.opacity=.32;sc.add(grid);
+ const gl=new THREE.MeshStandardMaterial({color:0xd9f2ff,transparent:true,opacity:.09,roughness:.06,metalness:.28,side:THREE.DoubleSide});
+ const alum=M(0xaebdc7,{metalness:.85,roughness:.35}),soil=M(0x2a1a11,{roughness:1}),wood=M(0x6a4930,{roughness:.85});
+ const H=3,hx=4,hz=2.5;
+ [[-hx,-hz],[hx,-hz],[-hx,hz],[hx,hz],[0,-hz],[0,hz]].forEach(([x,z])=>add(new THREE.BoxGeometry(.09,H,.09),alum,x,H/2,z));
+ [-hz,hz].forEach(z=>{add(new THREE.BoxGeometry(8.12,.1,.1),alum,0,H,z);add(new THREE.BoxGeometry(8.12,.07,.07),alum,0,.05,z);add(new THREE.BoxGeometry(8.12,.05,.05),alum,0,1.5,z)});
+ [-hx,hx].forEach(x=>{add(new THREE.BoxGeometry(.1,.1,5.12),alum,x,H,0);add(new THREE.BoxGeometry(.06,.06,5.12),alum,x,1.5,0)});
+ [[8,3,0,1.5,-hz,0],[8,3,0,1.5,hz,0],[5,3,-hx,1.5,0,Math.PI/2],[5,3,hx,1.5,0,-Math.PI/2]].forEach(([w,h,x,y,z,ry])=>{const p=add(new THREE.PlaneGeometry(w,h),gl,x,y,z);p.rotation.y=ry});
+ const door=new THREE.Group();door.position.set(2.3,0,hz+.01);sc.add(door);
+ add(new THREE.BoxGeometry(.92,2.1,.03),gl,0,1.05,0,door);
+ add(new THREE.BoxGeometry(1.04,.07,.07),alum,0,2.12,0,door);add(new THREE.BoxGeometry(.07,2.12,.07),alum,-.5,1.06,0,door);add(new THREE.BoxGeometry(.07,2.12,.07),alum,.5,1.06,0,door);
+ add(new THREE.CylinderGeometry(.02,.02,.24,8),M(0xcbd5e1,{metalness:.9,roughness:.25}),.36,1.05,.05,door).rotation.x=Math.PI/2;
+ const ra=Math.atan(1.25/hz),rl=Math.hypot(hz,1.25);
+ [-1,1].forEach(s=>add(new THREE.BoxGeometry(8.16,.05,rl+.06),gl,0,H+.62,s*hz/2).rotation.x=s*ra);
+ add(new THREE.BoxGeometry(8.2,.09,.09),alum,0,H+1.25,0);
+ [-hx,hx].forEach(x=>[-1,1].forEach(s=>add(new THREE.BoxGeometry(.06,.06,rl),alum,x,H+.62,s*hz/2).rotation.x=s*ra));
+ const sh=new THREE.Shape();sh.moveTo(-hz,0);sh.lineTo(hz,0);sh.lineTo(0,1.25);[-hx,hx].forEach(x=>{add(new THREE.ShapeGeometry(sh),gl,x,H,0).rotation.y=Math.PI/2});
+ const caps=[0xf3dcb4,0xe8c99c,0xdaa96c,0xcb9455,0xf0d9b2];
+ const mushroom=(x,z,s)=>{const g=new THREE.Group();add(new THREE.CylinderGeometry(.03,.05,.2,10),M(0xf7f2e6,{roughness:.85}),0,.1,0,g);const c=add(new THREE.SphereGeometry(.14,14,10,0,Math.PI*2,0,Math.PI/2),M(caps[(Math.random()*caps.length)|0],{roughness:.72}),0,.19,0,g);c.scale.y=.72;g.position.set(x,.56,z);g.scale.setScalar(s);g.rotation.set((Math.random()-.5)*.14,Math.random()*Math.PI,(Math.random()-.5)*.14);g.traverse(o=>o.castShadow=true);sc.add(g)};
+ [-1.35,1.35].forEach(z=>{const bed=add(new THREE.BoxGeometry(6.3,.46,1.2),wood,0,.28,z);bed.castShadow=bed.receiveShadow=true;add(new THREE.BoxGeometry(6.05,.05,1.0),soil,0,.52,z);
+  for(let i=0;i<15;i++)mushroom(-2.95+i*.42+(Math.random()-.5)*.14,z+(Math.random()-.5)*.62,.75+Math.random()*.6)});
+ const tkX=5.1,tkZ=2;
+ add(new THREE.CylinderGeometry(.4,.42,.08,24),M(0x334155,{metalness:.6,roughness:.5}),tkX,.04,tkZ);
+ add(new THREE.CylinderGeometry(.29,.29,.56,24),M(0x0ea5e9,{roughness:.1,metalness:.1,transparent:true,opacity:.55}),tkX,.36,tkZ);
+ add(new THREE.CylinderGeometry(.292,.292,.012,24),M(0x7dd3fc,{roughness:.05,metalness:.2,transparent:true,opacity:.85}),tkX,.63,tkZ);
+ add(new THREE.CylinderGeometry(.34,.34,.95,24),M(0xdfe9ec,{roughness:.25,metalness:.15,transparent:true,opacity:.26}),tkX,.5,tkZ);
+ add(new THREE.CylinderGeometry(.36,.36,.05,24),M(0x1e293b,{metalness:.5,roughness:.5}),tkX,.985,tkZ);
+ [.3,.72].forEach(y=>add(new THREE.TorusGeometry(.345,.016,10,28),M(0xaebdc7,{metalness:.85,roughness:.3}),tkX,y,tkZ).rotation.x=Math.PI/2);
+ add(new THREE.CylinderGeometry(.028,.028,.85,10),M(0x94a3b8,{metalness:.8,roughness:.3}),tkX,.55,tkZ);
+ add(new THREE.CylinderGeometry(.045,.045,.05,12),M(0x0ea5e9,{metalness:.6,roughness:.35}),tkX,.16,tkZ+.35).rotation.x=Math.PI/2;
+ const hose=M(0x38bdf8,{metalness:.5,roughness:.4});
+ add(new THREE.CylinderGeometry(.045,.045,1.88,12),hose,tkX,1.92,tkZ);
+ add(new THREE.CylinderGeometry(.045,.045,1.4,12),hose,4.4,2.86,tkZ).rotation.z=Math.PI/2;
+ add(new THREE.CylinderGeometry(.045,.045,2.15,12),hose,3.7,2.86,.925).rotation.x=Math.PI/2;
+ [[tkX,2.86,tkZ],[3.7,2.86,tkZ],[3.7,2.86,-.15]].forEach(([x,y,z])=>add(new THREE.SphereGeometry(.05,10,8),hose,x,y,z));
+ add(new THREE.BoxGeometry(.5,.4,.35),M(0x0f172a,{metalness:.55,roughness:.5}),3.45,.2,-2.05);
+ add(new THREE.CylinderGeometry(.05,.05,.3,10),M(0x38bdf8,{metalness:.6,roughness:.35}),3.45,.55,-2.05);
+ const fg=new THREE.Group();fg.position.set(-2.6,1.95,-2.42);sc.add(fg);
+ add(new THREE.TorusGeometry(.55,.055,14,36),M(0x9aa9b4,{metalness:.85,roughness:.3}),0,0,0,fg);
+ add(new THREE.TorusGeometry(.43,.012,8,36),M(0x7e8d98,{metalness:.85,roughness:.35}),0,0,.07,fg);
+ add(new THREE.TorusGeometry(.24,.012,8,28),M(0x7e8d98,{metalness:.85,roughness:.35}),0,0,.09,fg);
+ add(new THREE.CylinderGeometry(.13,.13,.16,22),M(0x334155,{metalness:.7,roughness:.4}),0,0,.02,fg).rotation.x=Math.PI/2;
+ const bl=new THREE.Group();bl.position.z=.1;fg.add(bl);
+ for(let i=0;i<4;i++){const b=add(new THREE.BoxGeometry(.48,.17,.025),M(0xd9e4ea,{metalness:.35,roughness:.45}),Math.cos(i*Math.PI/2)*.26,Math.sin(i*Math.PI/2)*.26,0,bl);b.rotation.z=i*Math.PI/2;b.rotation.x=.32}
+ const pipe=add(new THREE.CylinderGeometry(.045,.045,7.4,12),M(0x38bdf8,{metalness:.55,roughness:.35}),0,2.86,-.15);pipe.rotation.z=Math.PI/2;
+ [-2.6,-.9,.9,2.6].forEach(x=>{add(new THREE.CylinderGeometry(.055,.055,.1,10),M(0x0ea5e9,{metalness:.6}),x,2.79,-.15);add(new THREE.ConeGeometry(.055,.16,12),M(0x8fa1ad,{metalness:.8,roughness:.3}),x,2.68,-.15).rotation.x=Math.PI});
+ const N=150,pg=new THREE.BufferGeometry(),pa=new Float32Array(N*3),pv=new Float32Array(N);
+ for(let i=0;i<N;i++){pa[i*3]=(Math.random()-.5)*6.8;pa[i*3+1]=.7+Math.random()*2.2;pa[i*3+2]=-.15+(Math.random()-.5)*1.6;pv[i]=.5+Math.random()*.75}
+ pg.setAttribute('position',new THREE.BufferAttribute(pa,3));
+ const soft=(()=>{const c=document.createElement('canvas');c.width=c.height=64;const g=c.getContext('2d'),gr=g.createRadialGradient(32,32,0,32,32,32);gr.addColorStop(0,'rgba(255,255,255,1)');gr.addColorStop(.35,'rgba(205,240,255,.6)');gr.addColorStop(1,'rgba(205,240,255,0)');g.fillStyle=gr;g.fillRect(0,0,64,64);return new THREE.CanvasTexture(c)})();
+ const pts=new THREE.Points(pg,new THREE.PointsMaterial({map:soft,color:0xd8f4ff,size:.26,transparent:true,opacity:.75,depthWrite:false,blending:THREE.AdditiveBlending}));pts.visible=false;sc.add(pts);
+ add(new THREE.BoxGeometry(.52,.34,.18),M(0x1e293b,{metalness:.75,roughness:.4}),2.6,2.62,-2.38);
+ const bm=M(0xfff1cf,{emissive:0xffb84d,emissiveIntensity:0,roughness:.45,metalness:.1});
+ add(new THREE.CylinderGeometry(.11,.11,.3,18),bm,2.6,2.5,-2.16).rotation.x=Math.PI/2;
+ add(new THREE.BoxGeometry(.05,.45,.05),M(0x64748b,{metalness:.85}),2.6,2.98,-2.4);
+ const hl=new THREE.PointLight(0xffb257,0,10,2);hl.position.set(2.6,2.42,-1.82);sc.add(hl);
+ add(new THREE.CylinderGeometry(.15,.18,.07,18),M(0x334155,{metalness:.7,roughness:.4}),3.6,2.53,1.9);
+ const am=M(0x7f1d1d,{emissive:0xff2222,emissiveIntensity:.05,transparent:true,opacity:.9,roughness:.25});
+ add(new THREE.SphereGeometry(.16,20,12,0,Math.PI*2,0,Math.PI/2),am,3.6,2.56,1.9);
+ const al=new THREE.PointLight(0xff3333,0,6,2);al.position.set(3.6,2.74,1.9);sc.add(al);
+ add(new THREE.BoxGeometry(.44,.28,.12),M(0x0f766e,{roughness:.45,metalness:.2}),0,1.78,-2.45);
+ add(new THREE.BoxGeometry(.22,.09,.012),M(0x04211f,{roughness:.2}),0,1.82,-2.39);
+ add(new THREE.CylinderGeometry(.014,.014,.45,8),M(0x94a3b8,{metalness:.9,roughness:.3}),0,1.45,-2.45);
+ const lab=(t,x,y,z)=>{const c=document.createElement('canvas');c.width=512;c.height=128;const g=c.getContext('2d');g.fillStyle='#0b1013d9';g.beginPath();if(g.roundRect)g.roundRect(8,14,496,100,28);else g.rect(8,14,496,100);g.fill();g.strokeStyle='#10b98188';g.lineWidth=3;g.stroke();g.fillStyle='#e6f4f1';g.font='600 50px Inter,sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText(t,256,66);const s=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true}));s.scale.set(1.25,.31,1);s.position.set(x,y,z);sc.add(s)};
+ lab('Quạt',-2.6,2.62,-2.35);lab('Phun sương',0,3.12,-.15);lab('Sưởi halogen',2.6,2.98,-2.15);lab('Đèn báo',3.6,2.92,1.9);lab('SHT20',0,2.2,-2.35);lab('Bồn nước',tkX,1.5,2.85);
  let az=.6,el=.35,R=11,drag=null,last=performance.now();const T0={dead:false,rd,t:{},fv:0,hv:0};const cv=rd.domElement;
  cv.onpointerdown=e=>{drag=[e.clientX,e.clientY];cv.setPointerCapture(e.pointerId)};cv.onpointermove=e=>{if(!drag)return;az-=(e.clientX-drag[0])*.008;el=Math.max(.05,Math.min(1.3,el+(e.clientY-drag[1])*.006));drag=[e.clientX,e.clientY]};cv.onpointerup=()=>drag=null;cv.onwheel=e=>{e.preventDefault();R=Math.max(6,Math.min(18,R+e.deltaY*.01))};
  T0.rs=()=>{const w=box.clientWidth||600;rd.setSize(w,Ht);cam.aspect=w/Ht;cam.updateProjectionMatrix()};
  (function loop(now){if(T0.dead)return;requestAnimationFrame(loop);const dt=Math.min((now-last)/1000,.1);last=now;if(!drag)az+=dt*.08;
   cam.position.set(Math.sin(az)*Math.cos(el)*R,Math.sin(el)*R+1.3,Math.cos(az)*Math.cos(el)*R);cam.lookAt(0,1.4,0);const s=T0.t;
   T0.fv+=((s.fan?9:0)-T0.fv)*dt*3;bl.rotation.z-=T0.fv*dt;pts.visible=!!s.mist;
-  if(s.mist){for(let i=0;i<N;i++){pa[i*3+1]-=pv[i]*dt*.8;if(pa[i*3+1]<.8){pa[i*3+1]=2.85;pa[i*3]=(Math.random()-.5)*5.6}}pg.attributes.position.needsUpdate=true}
+  if(s.mist){for(let i=0;i<N;i++){pa[i*3+1]-=pv[i]*dt*.8;if(pa[i*3+1]<.8){pa[i*3+1]=2.85;pa[i*3]=(Math.random()-.5)*6.8}}pg.attributes.position.needsUpdate=true}
   T0.hv+=((s.heater?1:0)-T0.hv)*dt*4;hl.intensity=T0.hv*2.4;bm.emissiveIntensity=T0.hv*1.6;
   const on=s.alarm&&Math.floor(now/350)%2==0;am.emissiveIntensity=on?2:.05;al.intensity=on?2:0;rd.render(sc,cam)})(last);
  T0.set=d=>{T0.t=Object.fromEntries(DV.map(([k])=>[k,d[k].state]))};TH=T0;ST&&TH.set(ST.devices)}
 addEventListener('resize',()=>TH&&TH.rs&&TH.rs());
 const P={
 dashboard:{t:'Tổng quan hệ thống',s:'Dữ liệu thời gian thực từ phòng kính trồng nấm qua Modbus RTU RS-485.',
- b:()=>`<div class="g4">${[['t','🌡️','Nhiệt độ','°C'],['h','💧','Độ ẩm','%'],['fan','🌀','Quạt thông gió',''],['mist','💨','Phun sương','']].map(([i,ic,l,u])=>`<div class="card kp"><div class="tp"><div class="ic">${ic}</div><span class="bdg" id="b-${i}">…</span></div><div class="lbl">${l}</div><div class="val" id="v-${i}">--<small>${u}</small></div><div class="bar"><i id="r-${i}"></i></div></div>`).join('')}</div>
+ b:()=>`<div class="g6">${[['t','🌡️','Nhiệt độ','°C'],['h','💧','Độ ẩm','%'],['fan','🌀','Quạt thông gió',''],['mist','💨','Phun sương',''],['heater','🔥','Sưởi halogen',''],['alarm','🚨','Đèn cảnh báo','']].map(([i,ic,l,u])=>`<div class="card kp"><div class="tp"><div class="ic">${ic}</div><span class="bdg" id="b-${i}">…</span></div><div class="lbl">${l}</div><div class="val" id="v-${i}">--<small>${u}</small></div><div class="bar"><i id="r-${i}"></i></div></div>`).join('')}</div>
  <div class="g21"><div class="card"><h3>Digital Twin 3D — Phòng kính trồng nấm</h3><span class="lbl">Kéo chuột để xoay · cuộn để phóng to · tải bật/tắt hiển thị theo thời gian thực</span><div id="v3" style="height:400px;margin-top:12px;border-radius:18px;overflow:hidden;background:radial-gradient(circle at 50% 25%,#14352f,#070b0d);touch-action:none"></div><div class="row" id="hud" style="margin-top:12px"></div></div>
  <div><div class="card"><h3>System Health</h3><div class="hl" id="hl"></div></div><div class="card"><h3>Cảnh báo gần đây</h3><div id="ra" style="margin-top:10px"></div></div></div></div>
  <div class="card"><div class="hr"><div><h3>Chế độ điều khiển</h3><span class="lbl">ERP → Firebase → HMI → Modbus Relay</span></div><span class="bdg ok">Sẵn sàng</span></div><div class="g2" style="margin-top:14px"><div><div class="lbl" style="margin-bottom:8px">Chế độ vận hành</div><div class="row"><button class="bt" id="m-a">🤖 TỰ ĐỘNG</button><button class="bt" id="m-m">✋ THỦ CÔNG</button></div><div class="lbl" style="margin:16px 0 8px">An toàn</div><div class="row"><button class="bt red" id="es">⛔ E-STOP</button><button class="bt" id="rl">✓ Giải phóng</button></div></div><div><div class="lbl" style="margin-bottom:8px">Cơ cấu chấp hành (bấm để chuyển sang thủ công)</div><div class="act">${DV.map(([k])=>sw(k)).join('')}</div></div></div><div class="lbl" style="margin:14px 0 6px">ACK điều khiển</div><div class="mono" id="ack" style="font-size:12px;color:#6ee7b7"></div></div>${busCard}`,
- i(){build3d();$('#m-a').onclick=()=>DV.forEach(([k])=>cmd(k,{mode:'auto'}));$('#m-m').onclick=()=>DV.forEach(([k])=>cmd(k,{mode:'manual',state:ST.devices[k].state}));
-  $('#es').onclick=()=>{DV.forEach(([k])=>cmd(k,{mode:'manual',state:false}));toast('E-STOP: đã tắt toàn bộ tải')};$('#rl').onclick=()=>{DV.forEach(([k])=>cmd(k,{mode:'auto'}));toast('Đã giải phóng, về chế độ tự động')};
+ i(){build3d();$('#m-a').onclick=()=>DV.forEach(([k])=>cmd(k,{mode:'auto'}));$('#m-m').onclick=async()=>{const need=!ST||DV.some(([k])=>ST.devices[k].mode!=='manual');if(need&&!UNL){if(!await askPass())return toast('Đã hủy — giữ nguyên chế độ tự động');UNL=true}DV.forEach(([k])=>cmd(k,{mode:'manual',state:ST.devices[k].state},true))};
+  $('#es').onclick=()=>{DV.forEach(([k])=>cmd(k,{mode:'manual',state:false},true));toast('E-STOP: đã tắt toàn bộ tải')};$('#rl').onclick=()=>{DV.forEach(([k])=>cmd(k,{mode:'auto'}));toast('Đã giải phóng, về chế độ tự động')};
   $$('.sw').forEach(b=>b.onclick=()=>cmd(b.dataset.k,{mode:'manual',state:!ST.devices[b.dataset.k].state}));busInit()},
  u(s){const S=s.settings,T=s.temperature,H=s.humidity,zt=zone(T,S.temp_min,S.temp_max,S.temp_alarm),zh=zone(H,S.hum_min,S.hum_max);
   [['t',T,zt,50],['h',H,zh,100]].forEach(([i,v,z,m])=>{$('#v-'+i).firstChild.textContent=f1(v);$('#b-'+i).textContent=z[0];$('#b-'+i).className='bdg '+z[1];$('#r-'+i).style.width=Math.max(0,Math.min(100,(v||0)/m*100))+'%';$('#r-'+i).style.background=z[1]=='ok'?'var(--ac)':z[1]=='wn'?'var(--t)':'var(--bad)'});
-  ['fan','mist'].forEach(k=>{const d=s.devices[k];$('#v-'+k).firstChild.textContent=d.state?'BẬT':'TẮT';$('#b-'+k).textContent=d.mode=='auto'?'TỰ ĐỘNG':'THỦ CÔNG';$('#b-'+k).className='bdg '+(d.state?'ok':'');$('#r-'+k).style.width=d.state?'100%':'0'});
+  ['fan','mist','heater','alarm'].forEach(k=>{const d=s.devices[k],r=$('#r-'+k);$('#v-'+k).firstChild.textContent=d.state?'BẬT':'TẮT';$('#b-'+k).textContent=d.mode=='auto'?'AUTO':'MAN';$('#b-'+k).title=d.mode=='auto'?'Tự động':'Thủ công';$('#b-'+k).className='bdg '+(d.state?(k=='alarm'?'bad':'ok'):'');r.style.width=d.state?'100%':'0';r.style.background=d.state&&k=='alarm'?'var(--bad)':''});
   TH&&TH.set(s.devices);$('#hud').innerHTML=DV.map(([k])=>`<span class="bdg ${s.devices[k].state?'ok':''}">${IC[k]} ${s.devices[k].label}: ${s.devices[k].state?'BẬT':'TẮT'}</span>`).join('');
   DV.forEach(([k])=>{const d=s.devices[k],w=$(`.sw[data-k=${k}]`);w&&w.classList.toggle('on',d.state);const n=$(`[data-n=${k}]`);n&&(n.textContent=d.label+' · CH'+d.channel)});$('#ack').textContent=ack;
   const md=DV.map(([k])=>s.devices[k].mode),mm=md.every(x=>x=='auto')?'TỰ ĐỘNG':md.every(x=>x=='manual')?'THỦ CÔNG':'HỖN HỢP';$('#m-a').classList.toggle('on',mm=='TỰ ĐỘNG');$('#m-m').classList.toggle('on',mm=='THỦ CÔNG');
@@ -175,11 +287,14 @@ report:{t:'Báo cáo',s:'Thống kê vận hành và xuất dữ liệu telemetr
   $('#rs').innerHTML=[['NHIỆT ĐỘ TRUNG BÌNH',f1(avg('temp'))+' °C',mn==null?'':f1(mn)+' → '+f1(mx)+' °C',''],['ĐỘ ẨM TRUNG BÌNH',f1(avg('hum'))+' %',H.length?f1(Math.min(...H))+' → '+f1(Math.max(...H))+' %':'',''],['THỜI GIAN HOẠT ĐỘNG',Math.floor(s.uptime_s/3600)+'h '+Math.floor(s.uptime_s%3600/60)+'m','Phiên backend hiện tại',''],['ĐIỂM DỮ LIỆU',HI.length,'Trong 24 giờ qua',''],['QUẠT CHẠY',pct('fan')+'%','Tỉ lệ thời gian ON','#818cf8'],['PHUN SƯƠNG CHẠY',pct('mist')+'%','Tỉ lệ thời gian ON','#22d3ee'],['NHIỆT ĐỘ CAO NHẤT',f1(mx)+' °C','Trong 24 giờ','#f59e0b'],['NHIỆT ĐỘ THẤP NHẤT',f1(mn)+' °C','Trong 24 giờ','#34d399']].map(([a,b,d,c])=>`<div class="card"><div class="lbl">${a}</div><div class="st" style="font-size:28px;color:${c}">${b}</div><small style="color:var(--mut)">${d}</small></div>`).join('')}},
 settings:{t:'Cài đặt',s:'Cấu hình ngưỡng điều khiển, khóa API và cảnh báo âm thanh.',
  b:()=>`<div class="g2"><div class="card"><h3 style="margin-bottom:12px">Kết nối</h3>${kv('Dữ liệu','Realtime DB · '+FBCFG.projectId)}${kv('Kênh','status · readings · events · commands')}${kv('Đồng bộ','Realtime · qua Firebase')}<div id="cs"></div>${kv('Tài khoản',ME.user)}${kv('Vai trò',ME.role)}${kv('Truy cập','☁️ Firebase (rules mở)')}</div>
- <div class="card"><h3 style="margin-bottom:12px">Ngưỡng điều khiển (AUTO)</h3><form id="fm"></form><h4>Cảnh báo âm thanh</h4><div class="row"><button class="bt pr" id="s1">🔊 Bật</button><button class="bt" id="s2">▶ Test</button></div></div></div>`,
+ <div class="card"><h3 style="margin-bottom:12px">Ngưỡng điều khiển (AUTO)</h3><form id="fm"></form><h4>Cảnh báo âm thanh</h4><div class="row"><button class="bt pr" id="s1">🔊 Bật</button><button class="bt" id="s2">▶ Test</button></div></div></div>
+ <div class="card"><h3 style="margin-bottom:6px">Chế độ hiển thị</h3><div class="lbl" style="margin-bottom:12px">Giao diện máy tính hay điện thoại · áp dụng cho lần mở trang kế tiếp</div><div class="row" id="vwr"><button class="bt" data-v="auto">🖥️ Tự động</button><button class="bt" data-v="desk">💻 Máy tính</button><button class="bt" data-v="mobile">📱 Điện thoại</button></div><div class="lbl" id="vwn" style="margin-top:12px;color:#6ee7b7"></div></div>`,
  i(){const F=[['temp_min','Sưởi BẬT khi T dưới','°C'],['temp_max','Quạt + phun BẬT khi T trên','°C'],['temp_alarm','Cảnh báo quá nhiệt','°C'],['temp_hyst','Vùng trễ nhiệt độ','°C'],['hum_min','Phun sương BẬT khi H dưới','%'],['hum_max','Quạt hút BẬT khi H trên','%'],['hum_hyst','Vùng trễ độ ẩm','%'],['mist_pulse_on_s','Phun: thời gian bật','s'],['mist_pulse_off_s','Phun: thời gian nghỉ','s'],['failsafe_timeout_s','Failsafe (mất cảm biến)','s']];
   $('#fm').innerHTML=F.map(([k,l,u])=>`<div class="fr"><span>${l} (${u})</span><input type="number" step="0.5" name="${k}" value="${ST?ST.settings[k]:''}"></div>`).join('')+'<button class="bt pr" style="width:100%">💾 Lưu &amp; đồng bộ xuống backend</button>';
   $('#fm').onsubmit=async e=>{e.preventDefault();const b={};new FormData(e.target).forEach((v,k)=>b[k]=parseFloat(v));try{await fbCmd({type:'settings',values:b});toast('Đã gửi ngưỡng qua Firebase — backend sẽ áp dụng')}catch(x){toast('Lỗi: '+x.message)}};
-  $('#lo')&&($('#lo').onclick=logout);if(!can('admin'))$$('#fm input,#fm button').forEach(x=>x.disabled=true);$('#s1').onclick=()=>{SND=!SND;snd();beep()};$('#s2').onclick=()=>{SND=true;beep();snd()};snd()},
+  $('#lo')&&($('#lo').onclick=logout);if(!can('admin'))$$('#fm input,#fm button').forEach(x=>x.disabled=true);$('#s1').onclick=()=>{SND=!SND;snd();beep()};$('#s2').onclick=()=>{SND=true;beep();snd()};
+  const VW=localStorage.getItem('nh_view')||'auto';$('#vwn').textContent='Hiện tại: '+(VW=='desk'?'Máy tính':VW=='mobile'?'Điện thoại':'Tự động theo thiết bị');
+  $$('#vwr .bt').forEach(b=>{b.classList.toggle('on',b.dataset.v==VW);b.onclick=()=>{localStorage.setItem('nh_view',b.dataset.v);$('#vwn').textContent=b.textContent+' — đang tải lại…';setTimeout(()=>location.reload(),400)}});snd()},
  u(s){$('#cs')&&($('#cs').innerHTML=kv('Trạng thái',s.hmi_online?'<span style="color:#34d399">Hệ thống online ✓</span>':'<span style="color:#f87171">Hệ thống offline</span>')+kv('Cảm biến',s.sensor_ok?'Ổn định':'Mất kết nối')+kv('Chế độ',s.simulate?'Mô phỏng':'Phần cứng thật'))}}};
 function dl(n,t,c){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:t}));a.download=n;a.click()}
 const RK={viewer:1,operator:2,admin:3},can=r=>RK[ME.role]>=RK[r],csv=async()=>{if(HI.length<2)await hist(24);dl('greenhouse_history.csv','text/csv','time,temp_C,humidity_%,fan,mist,heater,alarm\n'+HI.map(r=>[tm(r.ts),r.temp,r.hum,r.fan,r.mist,r.heater,r.alarm].join(',')).join('\n'))};
@@ -199,7 +314,10 @@ function bline(f,bd){const t=new Date(f.ts*1000),ts=t.toLocaleTimeString('vi-VN'
 async function busPoll(){const st=ST&&ST.bus;if(cur!==P.dashboard||PAUSE||!$('#con')||!st)return;BUSST=st;
  $('#b-p').textContent=st.polls??'–';$('#b-r').textContent=st.rtt_avg==null?'–':Math.round(st.rtt_avg)+' ms';$('#b-o').textContent=st.rate==null?'–':st.rate+'%';
  $('#b-i').textContent=`${st.port||'mô phỏng'} · ${st.baud||9600} 8N1 · TX ${st.tx_bytes||0} B · RX ${st.rx_bytes||0} B`;
- if(!$('#con').children.length)$('#con').innerHTML='<div class="bl"><i>'+new Date().toLocaleTimeString('vi-VN')+'</i> Khung TX/RX chi tiết hiển thị tại HMI (máy chủ). Thống kê cập nhật qua Firebase.</div>'}
+ const con=$('#con'),bd=st.baud||9600,fr=st.frames||[],last=fr.length?fr[fr.length-1].id:0;
+ if(BID===0||last===0||last<BID||(fr.length&&fr[0].id>BID)){con.innerHTML='';fr.slice(-40).forEach(f=>con.insertAdjacentHTML('beforeend',bline(f,bd)));BID=last}
+ else{const nw=fr.filter(f=>f.id>BID);if(nw.length){nw.forEach(f=>con.insertAdjacentHTML('beforeend',bline(f,bd)));BID=last}}
+ con.scrollTop=con.scrollHeight}
 // ---- định tuyến và vòng cập nhật ----
 function go(){if(TH){TH.dead=true;TH.rd.dispose();TH=null}const h=(location.hash||'#dashboard').slice(1);cur=P[h]||P.dashboard;$$('nav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')=='#'+(P[h]?h:'dashboard')));
  $('#view').innerHTML=`<div class="hr"><div><h1>${cur.t}</h1><p class="sub">${cur.s}</p></div></div>`+cur.b();cur.i&&cur.i();ST&&cur.u(ST)}
