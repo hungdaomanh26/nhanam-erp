@@ -310,11 +310,11 @@ $('#snd').onclick=()=>{SND=!SND;snd();if(SND)beep()};
 // ---- giám sát đường truyền ----
 let BID=0,BIN=false,PAUSE=false;const bn=h=>h.split(' ').map(x=>isNaN(parseInt(x,16))?x:parseInt(x,16).toString(2).padStart(8,'0')).join(' ');
 function bline(f,bd){const t=new Date(f.ts*1000),ts=t.toLocaleTimeString('vi-VN',{hour12:false})+'.'+String(t.getMilliseconds()).padStart(3,'0');if(f.dir=='ERR')return`<div class="bl ERR"><i>[${ts}]</i> ✖ ${f.text}</div>`;
- return`<div class="bl ${f.dir}"><i>[${ts}]</i> ${f.dir=='TX'?'TX ▶':'RX ◀'} ${f.fields.map((x,i)=>`<b class="${i==0?'a':i==1?'f':x[0]=='CRC'?'c':'d'}" title="${x[0]}">${BIN?bn(x[1]):x[1]}</b>`).join(' ')}<em>${f.text}${f.rtt!=null?' · RTT '+f.rtt+' ms':''} · ${f.bits} bit · ${f.ms} ms @ ${bd} baud</em></div>`}
+ return`<div class="bl ${f.dir}"><i>[${ts}]</i> ${f.dir=='TX'?'TX ▶':'RX ◀'} ${f.fields.map((x,i)=>`<b class="${i==0?'a':i==1?'f':x[0]=='CRC'?'c':'d'}" title="${x[0]}">${BIN?bn(x[1]):x[1]}</b>`).join(' ')}<em>${f.text}${f.rtt!=null?' · RTT '+f.rtt+' ms':''} · ${f.bits} bit · ${f.ms} ms @ ${bd}</em></div>`}
 async function busPoll(){const st=ST&&ST.bus;if(cur!==P.dashboard||PAUSE||!$('#con')||!st)return;BUSST=st;
  $('#b-p').textContent=st.polls??'–';$('#b-r').textContent=st.rtt_avg==null?'–':Math.round(st.rtt_avg)+' ms';$('#b-o').textContent=st.rate==null?'–':st.rate+'%';
- $('#b-i').textContent=`${st.port||'mô phỏng'} · ${st.baud||9600} 8N1 · TX ${st.tx_bytes||0} B · RX ${st.rx_bytes||0} B`;
- const con=$('#con'),bd=st.baud||9600,fr=st.frames||[],last=fr.length?fr[fr.length-1].id:0;
+ $('#b-i').textContent=`${st.port||'mô phỏng'}${st.baud?` · ${st.baud} 8N1`:''} · TX ${st.tx_bytes||0} B · RX ${st.rx_bytes||0} B`;
+ const con=$('#con'),bd=st.baud?st.baud+' baud':'TCP',fr=st.frames||[],last=fr.length?fr[fr.length-1].id:0;
  if(BID===0||last===0||last<BID||(fr.length&&fr[0].id>BID)){con.innerHTML='';fr.slice(-40).forEach(f=>con.insertAdjacentHTML('beforeend',bline(f,bd)));BID=last}
  else{const nw=fr.filter(f=>f.id>BID);if(nw.length){nw.forEach(f=>con.insertAdjacentHTML('beforeend',bline(f,bd)));BID=last}}
  con.scrollTop=con.scrollHeight}
